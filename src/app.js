@@ -30,6 +30,8 @@ client.on('messageCreate', message => {
 	let types = ""
 	pokemon.types.forEach(type => types += type + " ");
 
+	pokemon.counts[0].fastMoves.forEach(fastMove => pokeEmbed.addField(fastMove.name, `+${fastMove.energy} energy / ${fastMove.turns} turn`, true));
+	//pokeEmbed.addField(pokemon.counts[0].fastMoves[0].name + '', 'hi')
 	
 	pokeEmbed.addField('Types', types);
     message.channel.send({ embeds: [pokeEmbed] });
@@ -62,7 +64,10 @@ const list = buildhelper.buildList();
 
 console.log(list[0].name)
 console.log(list[0].types)
+console.log(list[0].counts)
+console.log(list[0].counts.fastMoves)
 console.log(list[0].counts[0].fastMoves)
+console.log(list[0].counts[1].fastMoves)
 console.log(list[0].counts[0].fastMoves[0].name)
 console.log(list[0].counts[0].fastMoves[0].energy)
 console.log(list[0].counts[0].fastMoves[0].turns)
