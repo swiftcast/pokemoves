@@ -1,10 +1,10 @@
 const crypto = require("crypto");
 const fs = require("fs");
-const { minify } = require("html-minifier");
-const sass = require("node-sass");
-const nunjucks = require("nunjucks");
+//const { minify } = require("html-minifier");
+//const sass = require("node-sass");
+//const nunjucks = require("nunjucks");
 const { join, parse } = require("path");
-const UglifyJs = require("uglify-js");
+//const UglifyJs = require("uglify-js");
 
 const { setEq } = require("./helpers/collections");
 const { exclusions } = require("./data/adjustments/exclusions");
@@ -19,7 +19,7 @@ const timestamp = parseInt(
 const root = "docs";
 
 const views = join(__dirname, "views");
-nunjucks.configure(views);
+//nunjucks.configure(views);
 
 function build() {
   const list = buildList();
@@ -250,4 +250,5 @@ function buildHtml(list, resources) {
   });
 }
 
-build();
+//build();
+module.exports = {buildList};
