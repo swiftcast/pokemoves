@@ -9,10 +9,6 @@ client.on('ready', () => {
 client.login(process.env.TOKEN);
 
 var prefix = '!'
-//var pokemon = ""
-var chargeMove = ""
-
-
 
 client.on('messageCreate', message => {
   if (message.content === 'ping') {
@@ -23,7 +19,11 @@ client.on('messageCreate', message => {
   if (message.content.startsWith(prefix + "count ")) {
 	//let beginIndex = 
 	let command = message.content.slice((prefix + "count ").length);
-    //msg.reply('Pong!');
+
+	// Cleans input
+	command = command.toLowerCase()
+	command = command.charAt(0).toUpperCase() + command.slice(1);
+
 	let pokemon = list.filter(poke => poke.name === command)[0];
 
 	if (pokemon == undefined) {
@@ -33,31 +33,40 @@ client.on('messageCreate', message => {
 	pokeEmbed.setTitle(`${pokemon.name}`);
 
 	let types = ""
-	pokemon.types.forEach(type => types += type + " ");
+	// Capitalize first letter of each type
+	for (let i = 0; i < pokemon.types.length; i++) {
+		if (i == 1) types += '/';
+		types += pokemon.types[i].charAt(0).toUpperCase() + pokemon.types[i].slice(1);
+	}
 
-	//pokemon.counts[0].fastMoves.forEach(fastMove => pokeEmbed.addField(fastMove.name, `+${fastMove.energy} energy / ${fastMove.turns} turn`, true));
-	//pokemon.counts[0].chargedMove.forEach(chargedMove => pokeEmbed.addField(chargedMove.name, `-${chargedMove.energy} energy`, true));
-	//pokemon.counts.forEach.call(chargedMove => pokeEmbed.addField(chargedMove.name, `-${chargedMove.fastMoves[0].counts} `, true))
+	pokeEmbed.setDescription(types);
 
 	debugger;
+	let fastMovesField = ""
+
+	// Creates a field for each charge move 
 	for (let i = 0; i < pokemon.counts.length; i++) {
 		for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
 			debugger;
-			pokeEmbed.addField(pokemon.counts[i].chargedMove.name, `${pokemon.counts[i].fastMoves[j].name} : ${pokemon.counts[i].fastMoves[j].counts}`, true);
-
+			fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts} \n`; 
 		}
+		pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
+		fastMovesField = "";
 	}
+
+	//pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
 	
 	
-	pokeEmbed.addField('Types', types);
+	//pokeEmbed.addField('Types', types);
     message.channel.send({ embeds: [pokeEmbed] });
+	pokeEmbed = new MessageEmbed();
 	//message.channel.send(pokemon);
   }
 });
 
-const pokeEmbed = new MessageEmbed()
-	.setColor('#0099ff')
-	.setTitle('')
+var pokeEmbed = new MessageEmbed()
+	//.setColor('#0099ff')
+	//.setTitle('')
 	//.setURL('https://discord.js.org/')
 	//.setAuthor('Some name', 'https://i.imgur.com/AfFp7pu.png', 'https://discord.js.org')
 	//.setDescription('Some description here')
