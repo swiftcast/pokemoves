@@ -25,13 +25,29 @@ client.on('messageCreate', message => {
 	let command = message.content.slice((prefix + "count ").length);
     //msg.reply('Pong!');
 	let pokemon = list.filter(poke => poke.name === command)[0];
+
+	if (pokemon == undefined) {
+		return;
+	}
+
 	pokeEmbed.setTitle(`${pokemon.name}`);
 
 	let types = ""
 	pokemon.types.forEach(type => types += type + " ");
 
-	pokemon.counts[0].fastMoves.forEach(fastMove => pokeEmbed.addField(fastMove.name, `+${fastMove.energy} energy / ${fastMove.turns} turn`, true));
-	//pokeEmbed.addField(pokemon.counts[0].fastMoves[0].name + '', 'hi')
+	//pokemon.counts[0].fastMoves.forEach(fastMove => pokeEmbed.addField(fastMove.name, `+${fastMove.energy} energy / ${fastMove.turns} turn`, true));
+	//pokemon.counts[0].chargedMove.forEach(chargedMove => pokeEmbed.addField(chargedMove.name, `-${chargedMove.energy} energy`, true));
+	//pokemon.counts.forEach.call(chargedMove => pokeEmbed.addField(chargedMove.name, `-${chargedMove.fastMoves[0].counts} `, true))
+
+	debugger;
+	for (let i = 0; i < pokemon.counts.length; i++) {
+		for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
+			debugger;
+			pokeEmbed.addField(pokemon.counts[i].chargedMove.name, `${pokemon.counts[i].fastMoves[j].name} : ${pokemon.counts[i].fastMoves[j].counts}`, true);
+
+		}
+	}
+	
 	
 	pokeEmbed.addField('Types', types);
     message.channel.send({ embeds: [pokeEmbed] });
@@ -62,7 +78,7 @@ let buildhelper = require ("./build")
 const list = buildhelper.buildList();
 
 
-console.log(list[0].name)
+/*console.log(list[0].name)
 console.log(list[0].types)
 console.log(list[0].counts)
 console.log(list[0].counts.fastMoves)
@@ -70,8 +86,12 @@ console.log(list[0].counts[0].fastMoves)
 console.log(list[0].counts[1].fastMoves)
 console.log(list[0].counts[0].fastMoves[0].name)
 console.log(list[0].counts[0].fastMoves[0].energy)
-console.log(list[0].counts[0].fastMoves[0].turns)
+console.log(list[0].counts[0].fastMoves[0].turns)*/
 
+//var result = list.filter(poke => poke.name === "Haunter")[0]
 var result = list.filter(poke => poke.name === "Haunter")[0]
-
 console.log(result);
+console.log(result.counts)
+console.log(result.counts[0].fastMoves)
+console.log(result.counts[0].fastMoves[0])
+console.log(result.counts[0].fastMoves[0].counts)
