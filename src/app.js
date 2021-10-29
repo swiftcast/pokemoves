@@ -8,12 +8,17 @@ client.on('ready', () => {
 
 client.login(process.env.TOKEN);
 
-var prefix = '!'
+var prefix = '.'
 
 client.on('messageCreate', message => {
-  if (message.content === 'ping') {
+  if (message.content === '!ping') {
     //msg.reply('Pong!');
     message.channel.send('Pong!');
+  }
+
+  if (message.content === '!hi') {
+    //msg.reply('Pong!');
+    message.channel.send('hi ur qt');
   }
 
   if (message.content.startsWith(prefix + "count ")) {
@@ -48,7 +53,7 @@ client.on('messageCreate', message => {
 	for (let i = 0; i < pokemon.counts.length; i++) {
 		for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
 			debugger;
-			fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts} \n`; 
+			fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
 		}
 		pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
 		fastMovesField = "";
@@ -65,42 +70,7 @@ client.on('messageCreate', message => {
 });
 
 var pokeEmbed = new MessageEmbed()
-	//.setColor('#0099ff')
-	//.setTitle('')
-	//.setURL('https://discord.js.org/')
-	//.setAuthor('Some name', 'https://i.imgur.com/AfFp7pu.png', 'https://discord.js.org')
-	//.setDescription('Some description here')
-	//.setThumbnail('https://i.imgur.com/AfFp7pu.png')
-	/*.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-	)
-	.addField('Inline field title', 'Some value here', true)
-	.setImage('https://i.imgur.com/AfFp7pu.png')
-	.setTimestamp()
-	.setFooter('Some footer text here', 'https://i.imgur.com/AfFp7pu.png')*/;
 
 
 let buildhelper = require ("./build")
 const list = buildhelper.buildList();
-
-
-/*console.log(list[0].name)
-console.log(list[0].types)
-console.log(list[0].counts)
-console.log(list[0].counts.fastMoves)
-console.log(list[0].counts[0].fastMoves)
-console.log(list[0].counts[1].fastMoves)
-console.log(list[0].counts[0].fastMoves[0].name)
-console.log(list[0].counts[0].fastMoves[0].energy)
-console.log(list[0].counts[0].fastMoves[0].turns)*/
-
-//var result = list.filter(poke => poke.name === "Haunter")[0]
-var result = list.filter(poke => poke.name === "Haunter")[0]
-console.log(result);
-console.log(result.counts)
-console.log(result.counts[0].fastMoves)
-console.log(result.counts[0].fastMoves[0])
-console.log(result.counts[0].fastMoves[0].counts)
