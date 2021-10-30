@@ -11,12 +11,12 @@ client.login(process.env.TOKEN);
 var prefix = '.'
 
 client.on('messageCreate', message => {
-  if (message.content === '!ping') {
+  if (message.content === '.ping') {
     //msg.reply('Pong!');
     message.channel.send('Pong!');
   }
 
-  if (message.content === '!hi') {
+  if (message.content === '.hi') {
     //msg.reply('Pong!');
     message.channel.send('hi ur qt');
   }
@@ -27,7 +27,15 @@ client.on('messageCreate', message => {
 
 	// Cleans input
 	command = command.toLowerCase()
-	command = command.charAt(0).toUpperCase() + command.slice(1);
+	let arr = command.split(' ')
+	arr[0] = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
+
+	// If it's a regional form noted by having a 2nd element in array
+	if (arr.length > 1) {
+		arr[1] = "(" + arr[1].charAt(0).toUpperCase() + arr[1].slice(1) + ")";
+	}
+
+	command = arr.join(' ');
 
 	let pokemon = list.filter(poke => poke.name === command)[0];
 
