@@ -67,7 +67,9 @@ client.on('messageCreate', message => {
 		fastMovesField = "";
 	}
 
-	//pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
+	dbhelper.connectToDb();
+	dbhelper.insertUser(message.author.id, 0);
+	dbhelper.closeDb();
 	
 	
 	//pokeEmbed.addField('Types', types);
@@ -81,4 +83,5 @@ var pokeEmbed = new MessageEmbed()
 
 
 let buildhelper = require ("./build")
+const dbhelper = require ("./db")
 const list = buildhelper.buildList();
