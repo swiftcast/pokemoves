@@ -68,7 +68,7 @@ client.on('messageCreate', message => {
 	}
 
 	dbhelper.connectToDb();
-	dbhelper.insertUser(message.author.id, 0);
+	dbhelper.insertUser(message.author.id, 1);
 	dbhelper.closeDb();
 	
 	
