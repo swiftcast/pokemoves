@@ -28,6 +28,7 @@ client.on('messageCreate', message => {
 	// Cleans input
 	command = command.toLowerCase()
 	let arr = command.split(' ')
+	let arrThumb = [...arr]; // Used for the embed thumbnail
 	arr[0] = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
 
 	// If it's a regional form noted by having a 2nd element in array
@@ -65,6 +66,30 @@ client.on('messageCreate', message => {
 		}
 		pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
 		fastMovesField = "";
+	}
+
+	if (arrThumb.length > 1) {
+		/*if (command.search('galar')) {
+			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -3)}.gif`);
+		}
+
+		else if (command.search('alola')) {
+			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -1)}.gif`);
+		}*/
+
+		switch(arrThumb[1]) {
+			case 'galarian':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -3)}.gif`);
+				break;
+			case 'alolan':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -1)}.gif`);
+				break;
+			//case 'hisuian':
+			//	pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -2)}.gif`);
+			//	break;
+			default:
+				break;
+		}
 	}
 
 	dbhelper.connectToDb();
