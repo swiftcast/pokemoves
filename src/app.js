@@ -69,13 +69,6 @@ client.on('messageCreate', message => {
 	}
 
 	if (arrThumb.length > 1) {
-		/*if (command.search('galar')) {
-			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -3)}.gif`);
-		}
-
-		else if (command.search('alola')) {
-			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -1)}.gif`);
-		}*/
 
 		switch(arrThumb[1]) {
 			case 'galarian':
@@ -90,6 +83,10 @@ client.on('messageCreate', message => {
 			default:
 				break;
 		}
+	}
+
+	else {
+		pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}.gif`)
 	}
 
 	dbhelper.connectToDb();
