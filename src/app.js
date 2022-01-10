@@ -77,9 +77,18 @@ client.on('messageCreate', message => {
 			case 'alolan':
 				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -1)}.gif`);
 				break;
-			//case 'hisuian':
-			//	pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -2)}.gif`);
-			//	break;
+			case 'therian':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
+				break;
+			case 'armoured':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}.gif`);
+				break;
+			/*ase 'crowned':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
+				break;
+			case 'hisuian':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1].slice(0, -2)}.gif`);
+				break;*/
 			default:
 				break;
 		}
