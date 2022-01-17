@@ -1207,6 +1207,7 @@
     "Feint Attack",
     "Snarl",
     "Dark Pulse",
+    "Sludge Bomb",
     "Shadow Ball",
     "Focus Blast"
   ],
@@ -6608,7 +6609,9 @@
   ],
   "Walrein": [
     "Frost Breath",
+    "Powder Snow",
     "Waterfall",
+    "Icicle Spear",
     "Water Pulse",
     "Earthquake",
     "Return",
