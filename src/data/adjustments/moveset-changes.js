@@ -1,17 +1,11 @@
-// See https://pokemongo.fandom.com/wiki/List_of_legacy_moves
-// Plus some adjustments for other known changes, e.g. Techno Blast on Genesect (Burn).
+// See: https://p337.info/pokemongo/pages/legacy-moves/
+// Plus some adjustments for other known changes, e.g. Techno Blast on Genesect forms.
 module.exports = {
   movesetChanges: [
     {
       pokemonName: "Chansey",
       chargedMoveIds: {
         add: ["PSYBEAM"],
-      },
-    },
-    {
-      pokemonName: "Delibird",
-      fastMoveIds: {
-        add: ["QUICK_ATTACK_FAST"],
       },
     },
     {
