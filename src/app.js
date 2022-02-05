@@ -83,6 +83,18 @@ client.on('messageCreate', message => {
 			case 'armoured':
 				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}.gif`);
 				break;
+			case 'sunny':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
+				break;
+			case 'rainy':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
+				break;
+			case 'snowy':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
+				break;
+			case 'normal':
+				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}.gif`);
+				break;
 			/*ase 'crowned':
 				pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}-${arrThumb[1]}.gif`);
 				break;
