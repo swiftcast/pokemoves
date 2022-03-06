@@ -31,9 +31,16 @@ client.on('messageCreate', message => {
 		let arrThumb = [...arr]; // Used for the embed thumbnail
 
 		// Edge case bc of the apostrophe isn't the same as the one on the keyboard
-		if (arr[0].search('arfetch') > -1) {
+		if (arr[0].toLowerCase().search('arfetch') > -1) {
 			arr[0] = 'Farfetch’d';
-			arrThumb[0] = 'farfetchd'
+			arrThumb[0] = 'farfetchd';
+		}
+
+		if (arr.length > 1 && arr[1].search('mime') > -1) {
+			arr[0] = 'Mr. Mime';
+			if (arr.length == 3) {
+				arr[1] = '(Galarian)';
+			}
 		}
 
 		arr[0] = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
@@ -75,7 +82,7 @@ client.on('messageCreate', message => {
 			fastMovesField = "";
 		}
 
-		//message.channel.send(command);
+		message.channel.send(command);
 
 		if (arrThumb.length > 1) {
 
