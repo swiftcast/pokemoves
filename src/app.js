@@ -9,8 +9,35 @@ client.on('ready', () => {
 client.login(process.env.TOKEN);
 
 var prefix = '.'
+const emojisDict = {
+	normal: '952453832938500146',
+	water: '952453832762347542',
+	grass: '952453832883961866',
+	electric: '952453832875606056',
+	ice: '952453832816869377',
+	fighting: '952453832825274378',
+	fire: '952453832837849209',
+	poison: '952453832976261180',
+	ground: '952453832422617160',
+	flying: '952453832888156210',
+	psychic: '952453832951070770',
+	bug: '952453832439377972',
+	rock: '952453833018179614',
+	ghost: '952453832485527564',
+	dark: '952453832825241640',
+	dragon: '952453833500553276',
+	steel: '952453832883994654',
+	fairy: '952453832611360810'
+}
 
 client.on('messageCreate', message => {
+
+	//------
+	//let emoji = client.emojis.cache.get('868669940784308285')
+
+
+
+	//-----
 	if (message.content === '.ping') {
 		//msg.reply('Pong!');
 		message.channel.send('Pong!');
@@ -64,25 +91,27 @@ client.on('messageCreate', message => {
 		// Capitalize first letter of each type
 		for (let i = 0; i < pokemon.types.length; i++) {
 			if (i == 1) types += '/';
-			types += pokemon.types[i].charAt(0).toUpperCase() + pokemon.types[i].slice(1);
+			//types += pokemon.types[i].charAt(0).toUpperCase() + pokemon.types[i].slice(1);
+			types += `${client.emojis.cache.get(emojisDict[pokemon.types[i]])}`;
 		}
 
 		pokeEmbed.setDescription(types);
 
 		debugger;
-		let fastMovesField = ""
+		let fastMovesField = "----------\n"
 
 		// Creates a field for each charge move 
 		for (let i = 0; i < pokemon.counts.length; i++) {
 			for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
 				debugger;
-				fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
+				fastMovesField += `${client.emojis.cache.get(emojisDict[pokemon.counts[i].fastMoves[j].type])} ${pokemon.counts[i].fastMoves[j].name}: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
 			}
-			pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
-			fastMovesField = "";
+			fastMovesField += "----------\n";
+			pokeEmbed.addField(`${client.emojis.cache.get(emojisDict[pokemon.counts[i].chargedMove.type])} ${pokemon.counts[i].chargedMove.name}`, fastMovesField, true);
+			fastMovesField = "----------\n";
 		}
 
-		message.channel.send(command);
+		//message.channel.send(command);
 
 		if (arrThumb.length > 1) {
 
