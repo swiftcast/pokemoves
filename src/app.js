@@ -34,11 +34,6 @@ const EMOJISTABLE = {
 
 client.on('messageCreate', message => {
 
-	//------
-	//let emoji = client.emojis.cache.get('868669940784308285')
-
-
-
 	//-----
 	if (message.content === '.ping') {
 		//msg.reply('Pong!');
@@ -55,7 +50,13 @@ client.on('messageCreate', message => {
 		let command = message.content.slice((prefix + "count ").length);
 
 		// Cleans input
-		command = command.toLowerCase()
+		// command = command.toLowerCase()
+
+		// // checks for dash
+		// if (command.indexOf('-') > -1) { 
+		// 	command = command.slice(0, command.indexOf('-')) + command.charAt(command.indexOf('-') + 1).toUpperCase() + command.slice(command.indexOf('-') + 1)
+		// }
+		
 		let arr = command.split(' ')
 		let arrThumb = [...arr]; // Used for the embed thumbnail
 
@@ -73,6 +74,7 @@ client.on('messageCreate', message => {
 		}
 
 		arr[0] = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
+
 
 		// If it's a regional form noted by having a 2nd element in array
 		if (arr.length > 1) {
@@ -130,7 +132,7 @@ client.on('messageCreate', message => {
 			}		
 		}
 
-		//message.channel.send(command);
+		message.channel.send(command);
 
 		if (arrThumb.length > 1) {
 
