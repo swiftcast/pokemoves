@@ -9,7 +9,9 @@ client.on('ready', () => {
 client.login(process.env.TOKEN);
 
 var prefix = '.'
-const emojisDict = {
+
+// TODO: make into map later
+const EMOJISTABLE = {
 	normal: '952453832938500146',
 	water: '952453832762347542',
 	grass: '952453832883961866',
@@ -92,23 +94,40 @@ client.on('messageCreate', message => {
 		for (let i = 0; i < pokemon.types.length; i++) {
 			if (i == 1) types += '/';
 			//types += pokemon.types[i].charAt(0).toUpperCase() + pokemon.types[i].slice(1);
-			types += `${client.emojis.cache.get(emojisDict[pokemon.types[i]])}`;
+			types += `${client.emojis.cache.get(EMOJISTABLE[pokemon.types[i]])}`;
 		}
 
 		pokeEmbed.setDescription(types);
 
 		debugger;
-		let fastMovesField = "----------\n"
+		if (pokemon.name != "Mew") {
+			let fastMovesField = "----------\n"
 
-		// Creates a field for each charge move 
-		for (let i = 0; i < pokemon.counts.length; i++) {
-			for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
-				debugger;
-				fastMovesField += `${client.emojis.cache.get(emojisDict[pokemon.counts[i].fastMoves[j].type])} ${pokemon.counts[i].fastMoves[j].name}: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
+			// Creates a field for each charge move 
+			for (let i = 0; i < pokemon.counts.length; i++) {
+				for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
+					debugger;
+					fastMovesField += `${client.emojis.cache.get(EMOJISTABLE[pokemon.counts[i].fastMoves[j].type])} ${pokemon.counts[i].fastMoves[j].name}: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
+				}
+				fastMovesField += "----------\n";
+				pokeEmbed.addField(`${client.emojis.cache.get(EMOJISTABLE[pokemon.counts[i].chargedMove.type])} ${pokemon.counts[i].chargedMove.name}`, fastMovesField, true);
+				fastMovesField = "----------\n";
 			}
-			fastMovesField += "----------\n";
-			pokeEmbed.addField(`${client.emojis.cache.get(emojisDict[pokemon.counts[i].chargedMove.type])} ${pokemon.counts[i].chargedMove.name}`, fastMovesField, true);
-			fastMovesField = "----------\n";
+		}
+
+		// edge case for mew because it goes over 4000 embed char limit with the type emojis
+		else {
+			let fastMovesField = ""
+
+			// Creates a field for each charge move 
+			for (let i = 0; i < pokemon.counts.length; i++) {
+				for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
+					debugger;
+					fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
+				}
+				pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
+				fastMovesField = "";
+			}		
 		}
 
 		//message.channel.send(command);
