@@ -89,21 +89,23 @@ client.on('messageCreate', message => {
 			return;
 		}
 
-		pokeEmbed.setTitle(`${pokemon.name}`);
+		
 
 		let types = ""
 		// Capitalize first letter of each type
 		for (let i = 0; i < pokemon.types.length; i++) {
-			if (i == 1) types += '/';
+			if (i == 1) types += ' ';
 			//types += pokemon.types[i].charAt(0).toUpperCase() + pokemon.types[i].slice(1);
 			types += `${client.emojis.cache.get(EMOJISTABLE[pokemon.types[i]])}`;
 		}
 
-		pokeEmbed.setDescription(types);
+		pokeEmbed.setTitle(`${pokemon.name} ${types}`);
+		//pokeEmbed.setDescription(types);
 
 		debugger;
 		if (pokemon.name != "Mew") {
-			let fastMovesField = "----------\n"
+			//let fastMovesField = "----------\n"
+			let fastMovesField = ""
 
 			// Creates a field for each charge move 
 			for (let i = 0; i < pokemon.counts.length; i++) {
@@ -113,7 +115,8 @@ client.on('messageCreate', message => {
 				}
 				fastMovesField += "----------\n";
 				pokeEmbed.addField(`${client.emojis.cache.get(EMOJISTABLE[pokemon.counts[i].chargedMove.type])} ${pokemon.counts[i].chargedMove.name}`, fastMovesField, true);
-				fastMovesField = "----------\n";
+				//fastMovesField = "----------\n";
+				fastMovesField = "\n";
 			}
 		}
 
@@ -194,7 +197,7 @@ client.on('messageCreate', message => {
 	}
 });
 
-var pokeEmbed = new MessageEmbed()
+let pokeEmbed = new MessageEmbed()
 
 
 let buildhelper = require ("./build")
