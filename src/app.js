@@ -37,6 +37,7 @@ client.on('messageCreate', message => {
 	//-----
 	if (message.content === '.ping') {
 		//msg.reply('Pong!');
+		console.log('b')
 		message.channel.send('Pong!');
 	}
 
@@ -83,7 +84,7 @@ client.on('messageCreate', message => {
 
 		command = arr.join(' ');
 
-		let pokemon = list.filter(poke => poke.name === command)[0];
+		let pokemon = list.filter(poke => poke.name.toLowerCase() === command.toLowerCase())[0];
 
 		if (pokemon == undefined) {
 			return;
@@ -135,7 +136,7 @@ client.on('messageCreate', message => {
 			}		
 		}
 
-		message.channel.send(command);
+		//message.channel.send(command);
 
 		if (arrThumb.length > 1) {
 
@@ -182,7 +183,7 @@ client.on('messageCreate', message => {
 		}
 
 		else {
-			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0]}.gif`)
+			pokeEmbed.setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${arrThumb[0].toLowerCase()}.gif`)
 		}
 
 		dbhelper.connectToDb();
