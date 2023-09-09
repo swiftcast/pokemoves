@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, MessageEmbed }  = require('discord.js');
 const client  = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const axios = require('axios');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -32,8 +33,10 @@ const EMOJISTABLE = {
 	fairy: '952453832611360810'
 }
 
-client.on('messageCreate', message => {
+client.on('messageCreate',  async message => {
 
+	const args = message.content.slice(prefix.length).trim().split(' ');
+    let command = args.shift().toLowerCase();
 	//-----
 	if (message.content === '.ping') {
 		//msg.reply('Pong!');
@@ -49,14 +52,6 @@ client.on('messageCreate', message => {
 	if (message.content.startsWith(prefix + "count ")) {
 		//let beginIndex = 
 		let command = message.content.slice((prefix + "count ").length);
-
-		// Cleans input
-		// command = command.toLowerCase()
-
-		// // checks for dash
-		// if (command.indexOf('-') > -1) { 
-		// 	command = command.slice(0, command.indexOf('-')) + command.charAt(command.indexOf('-') + 1).toUpperCase() + command.slice(command.indexOf('-') + 1)
-		// }
 		
 		let arr = command.split(' ')
 		let arrThumb = [...arr]; // Used for the embed thumbnail
@@ -84,7 +79,7 @@ client.on('messageCreate', message => {
 
 		command = arr.join(' ');
 
-		let pokemon = list.filter(poke => poke.name.toLowerCase() === command.toLowerCase())[0];
+		let pokemon = list.pokemon.filter(poke => poke.name.toLowerCase() === command.toLowerCase())[0];
 
 		if (pokemon == undefined) {
 			return;
@@ -104,37 +99,40 @@ client.on('messageCreate', message => {
 		//pokeEmbed.setDescription(types);
 
 		debugger;
-		if (pokemon.name != "Mew") {
+		/*if (pokemon.name != "Mew") {
 			//let fastMovesField = "----------\n"
 			let fastMovesField = ""
 
 			// Creates a field for each charge move 
-			for (let i = 0; i < pokemon.counts.length; i++) {
-				for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
+			for (let i = 0; i < chargedMoves.length; i++) {
+				for (let j = 0; j < fastMoves.length; j++) {
 					debugger;
-					fastMovesField += `${client.emojis.cache.get(EMOJISTABLE[pokemon.counts[i].fastMoves[j].type])} ${pokemon.counts[i].fastMoves[j].name}: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
+					fastMovesField += `${client.emojis.cache.get(EMOJISTABLE[list.moves[fastMoves[i]].type])} ${fastMoves[i]}: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`; 
 				}
 				fastMovesField += "----------\n";
-				pokeEmbed.addField(`${client.emojis.cache.get(EMOJISTABLE[pokemon.counts[i].chargedMove.type])} ${pokemon.counts[i].chargedMove.name}`, fastMovesField, true);
+				pokeEmbed.addField(`${client.emojis.cache.get(EMOJISTABLE[list.moves[chargedMoves].type])} ${chargedMoves[i]}`, fastMovesField, true);
 				//fastMovesField = "----------\n";
 				fastMovesField = "\n";
 			}
-		}
+		}*/
 
 		// edge case for mew because it goes over 4000 embed char limit with the type emojis
-		else {
-			let fastMovesField = ""
+		
+		let fastMovesField = ""
 
-			// Creates a field for each charge move 
-			for (let i = 0; i < pokemon.counts.length; i++) {
-				for (let j = 0; j < pokemon.counts[i].fastMoves.length; j++) {
-					debugger;
-					fastMovesField += `**${pokemon.counts[i].fastMoves[j].name}**: ${pokemon.counts[i].fastMoves[j].counts}\n`; 
-				}
-				pokeEmbed.addField(pokemon.counts[i].chargedMove.name, fastMovesField, true);
-				fastMovesField = "";
-			}		
-		}
+		let chargedMoves = pokemon.chargedMoveIds
+		let fastMoves = pokemon.fastMoveIds
+
+		// Creates a field for each charge move 
+		for (let i = 0; i < chargedMoves.length; i++) {
+			for (let j = 0; j < fastMoves.length; j++) {
+				debugger;
+				fastMovesField += `**${fastMoves[j]}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`; 
+			}
+			pokeEmbed.addField(chargedMoves[i], fastMovesField, true);
+			fastMovesField = "";
+		}		
+	
 
 		//message.channel.send(command);
 
@@ -196,11 +194,13 @@ client.on('messageCreate', message => {
 		pokeEmbed = new MessageEmbed();
 		//message.channel.send(pokemon);
 	}
-});
+})
+
+	
 
 let pokeEmbed = new MessageEmbed()
 
 
 let buildhelper = require ("./build")
 const dbhelper = require ("./db")
-const list = buildhelper.buildList();
+const list = buildhelper.buildData();
