@@ -98,7 +98,6 @@ client.on('messageCreate',  async message => {
 		pokeEmbed.setTitle(`${pokemon.name} ${types}`);
 		//pokeEmbed.setDescription(types);
 
-		debugger;
 		/*if (pokemon.name != "Mew") {
 			//let fastMovesField = "----------\n"
 			let fastMovesField = ""
@@ -127,9 +126,9 @@ client.on('messageCreate',  async message => {
 		for (let i = 0; i < chargedMoves.length; i++) {
 			for (let j = 0; j < fastMoves.length; j++) {
 				debugger;
-				fastMovesField += `**${fastMoves[j]}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`; 
+				fastMovesField += `**${list.moves[fastMoves[j]].name}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`; 
 			}
-			pokeEmbed.addField(chargedMoves[i], fastMovesField, true);
+			pokeEmbed.addField(list.moves[chargedMoves[i]].name, fastMovesField, true);
 			fastMovesField = "";
 		}		
 	
