@@ -26,10 +26,32 @@ Afterwards, run it locally using `node app` in the src directory. That's where t
 
 ## Notes
 
-I drew this diagram to assist me with the visualization of how the data was organized in the source project, perhaps it can be useful to others, too.
+```mermaid
+graph TD
+  subgraph "buildData Object"
+    pokemon{pokemon}
+    moves{moves}
+    counts{counts}
+  end
 
-![](https://i.imgur.com/MtE4ODT.png)
+  pokemon --> |Array of Pokemon Objects| pokemonObj{Pokemon Object}
+  moves --> |Object of Move Details| moveDetails{Move Details}
+  counts --> |Object of Fast Move Counts| fastMoveCounts{Fast Move Counts}
 
+  pokemonObj --> name["name"]
+  pokemonObj --> types["types"]
+  pokemonObj --> fastMoveIds["fastMoveIds"]
+  pokemonObj --> chargedMoveIds["chargedMoveIds"]
+  pokemonObj --> cmp["cmp"]
+
+  moveDetails --> |Move ID| moveID["Move ID"]
+  moveDetails --> |Move Details| moveName["name"]
+  moveDetails --> |Move Type| moveType["type"]
+  moveDetails --> |Energy Cost| moveEnergy["energy"]
+
+  fastMoveCounts --> |Fast Move ID| fastMoveID["Fast Move ID"]
+  fastMoveCounts --> |Counts for Charged Moves| chargedMoveCounts["Charged Move Counts"]
+```
 ## Credits
 
 This bot builds on the great work of [Jamie Humphries](https://github.com/jamiehumphries), whom's site can be accessed [here](https://www.pokemoves.com/).
