@@ -19,11 +19,11 @@ module.exports = {
 	},
 };
 
-function getPokemon(command) {
+function getPokemonObj(command) {
   return list.pokemon.filter(poke => poke.name.toLowerCase() === command.toLowerCase())[0];
 }
 
-function getMovesFields(pokemonObj, pokeEmbed) {
+function getMovesFields(pokemonObj) {
     let chargedMoves = pokemonObj.chargedMoveIds;
     let fastMoves = pokemonObj.fastMoveIds;
     let fields = [];
@@ -51,9 +51,9 @@ function getMovesFields(pokemonObj, pokeEmbed) {
 
 
 let getCountsEmbed = function(pokemonInput, form) {
-  pokemon = getPokemon(pokemonInput)
+  let pokemonObj = getPokemonObj(pokemonInput)
 
-  if (!pokemon) {
+  if (!pokemonObj) {
     return new EmbedBuilder()
         .setColor(0xFF0000) // Red color for error
         .setTitle('Pokemon not found')
@@ -62,11 +62,11 @@ let getCountsEmbed = function(pokemonInput, form) {
 
   const pokeEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
-	.setTitle(pokemon.name)
+	.setTitle(pokemonObj.name)
 	//.setURL('https://discord.js.org/')
-	.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+	//.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
 	.setDescription('Some description here')
-	.setThumbnail(generateThumbnailURL(pokemon.name) )
+	.setThumbnail(generateThumbnailURL(pokemonObj.name) )
 	/*.addFields(
 		{ name: 'Regular field title', value: 'Some value here' },
 		{ name: '\u200B', value: '\u200B' },
@@ -74,15 +74,12 @@ let getCountsEmbed = function(pokemonInput, form) {
 		{ name: 'Inline field title', value: 'Some value here', inline: true },
 	)
 	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })*/
-  	//.addFields(getMovesFields(pokemon, exampleEmbed))
-	.setImage('https://i.imgur.com/AfFp7pu.png')
+	//.setImage('https://i.imgur.com/AfFp7pu.png')
 	.setTimestamp()
-	.setFields(getMovesFields(pokemon))
+	.setFields(getMovesFields(pokemonObj))
 	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
-  //getMovesFields(pokemon, pokeEmbed)
-
-  return pokeEmbed
+ return pokeEmbed
 }
 
 function generateThumbnailURL(pokemonName, thumbType) {
