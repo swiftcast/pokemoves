@@ -38,11 +38,13 @@ async function isJsonNewerOnUrl() {
         await fs.writeFile(localJsonFilePath, JSON.stringify(jsonData, null, 2), 'utf8');
   
         console.log('JSON data updated successfully.');
+        return 'JSON data updated successfully.'
       } catch (error) {
         console.error('Error:', error.message);
       }
     } else {
       console.log('Local JSON file is up to date.');
+      return 'Local pokemoves JSON file is up to date.'
     }
   }
   
@@ -54,8 +56,8 @@ async function isJsonNewerOnUrl() {
       await interaction.deferReply(); // Defer the reply while updating the JSON
   
       try {
-        await updateJsonFromUrl();
-        await interaction.editReply('JSON file updated successfully.');
+        let msg = await updateJsonFromUrl();
+        await interaction.editReply(msg);
       } catch (error) {
         console.error('Error updating JSON:', error.message);
         await interaction.editReply('An error occurred while updating the JSON file.');
