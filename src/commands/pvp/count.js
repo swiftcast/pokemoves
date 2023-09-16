@@ -1,8 +1,13 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-let buildhelper = require ("../../build")
-const list = buildhelper.buildData();
+const fs = require('fs');
+
+//let buildhelper = require ("../../build")
+//const list = buildhelper.buildData();
+
+let list = reloadJsonData();
 
 module.exports = {
+	reloadJsonData,
 	data: new SlashCommandBuilder()
         .setName('count')
         .setDescription('Replies with move counts for a Pokemon')
@@ -103,6 +108,18 @@ function generateThumbnailURL(pokemonName, thumbType) {
 		return `${baseUrl}${pokemonName}-f.gif`;
 	  default:
 		return `${baseUrl}${pokemonName.toLowerCase()}.gif`;
+	}
+  }
+
+  function reloadJsonData() {
+	// Reload your JSON data here
+	try {
+	  const data = fs.readFileSync('../data/pokemovesdata.json', 'utf8');
+	  console.log("JSON reloaded.")
+	  return JSON.parse(data);
+	} catch (error) {
+	  console.error('Error reloading JSON data:', error.message);
+	  throw new Error('An error occurred while reloading the JSON data.');
 	}
   }
 

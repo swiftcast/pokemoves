@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
 const fs = require('fs/promises'); // Using promises-based fs module for async/await
+const { reloadJsonData } = require('./count');
 
 const jsonUrl = 'https://www.pokemoves.com/data.json'
 const localJsonFilePath = '../data/pokemovesdata.json';
@@ -38,6 +39,8 @@ async function isJsonNewerOnUrl() {
         await fs.writeFile(localJsonFilePath, JSON.stringify(jsonData, null, 2), 'utf8');
   
         console.log('JSON data updated successfully.');
+
+        reloadJsonData()
         return 'JSON data updated successfully.'
       } catch (error) {
         console.error('Error:', error.message);
