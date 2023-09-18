@@ -15,11 +15,25 @@ module.exports = {
             option.setName('pokemon')
                 .setDescription('The Pokemon whose moves are to be returned')
                 .setMaxLength(200)
-                .setRequired(true)),
+                .setRequired(true))
+		.addStringOption(option =>
+			option.setName('form')
+			.setDescription('Pokemon form to return')
+			.setAutocomplete(true)),
+	async autocomplete(interaction) {
+		const formOptions = formsArray
+
+		const focusedValue = interaction.options.getFocused();
+		const filtered = formOptions.filter(formOption => formOption.toLowerCase().startsWith(focusedValue.toLowerCase()));
+
+		await interaction.respond(
+			filtered.map(formOption => ({ name: formOption, value: formOption })),
+		);
+	},
     async execute(interaction) {
 		const pokemon = interaction.options.getString('pokemon') ?? 'wigglytuff';
 
-    const pokeEmbed = getCountsEmbed(pokemon)
+    	const pokeEmbed = getCountsEmbed(pokemon)
 		await interaction.reply({ embeds: [pokeEmbed]});
 	},
 };
@@ -143,3 +157,99 @@ function generateThumbnailURL(pokemonName, thumbType) {
 	steel: '952453832883994654',
 	fairy: '952453832611360810'
 }
+
+const formsArray = [
+	'10%',
+	'50%',
+	'Alolan',
+	'Altered',
+	'Aria',
+	'Armoured',
+	'Attack',
+	'Average Size',
+	'Baile',
+	'Black',
+	'Bug',
+	'Burn',
+	'Chill',
+	'Complete',
+	'Confined',
+	'Core',
+	'Crowned Shield',
+	'Crowned Sword',
+	'Dark',
+	'Dawn Wings',
+	'Defense',
+	'Douse',
+	'Dragon',
+	'Dusk',
+	'Dusk Mane',
+	'Electric',
+	'Eternamax',
+	'Fairy',
+	'Fan',
+	'Female',
+	'Fighting',
+	'Fire',
+	'Flying',
+	'Frost',
+	'Galarian',
+	'Ghost',
+	'Grass',
+	'Ground',
+	'Heat',
+	'Hero',
+	'Hero of Many Battles',
+	'Hisuian',
+	'Ice',
+	'Ice Rider',
+	'Incarnate',
+	'Land',
+	'Large Size',
+	'Libre',
+	'Male',
+	'Mega',
+	'Mega X',
+	'Mega Y',
+	'Midday',
+	'Midnight',
+	'Mow',
+	'Noice',
+	'Normal',
+	'Origin',
+	'Overcast',
+	'Pa’u',
+	'Pirouette',
+	'Plant',
+	'Poison',
+	'Pom-Pom',
+	'Pop Star',
+	'Primal',
+	'Psychic',
+	'Rainy',
+	'Rapid Strike',
+	'Rock',
+	'Rock Star',
+	'Sandy',
+	'School',
+	'Sensu',
+	'Shadow Rider',
+	'Shock',
+	'Single Strike',
+	'Sky',
+	'Small Size',
+	'Snowy',
+	'Solo',
+	'Speed',
+	'Steel',
+	'Sunny',
+	'Super Size',
+	'Therian',
+	'Trash',
+	'Ultra',
+	'Unbound',
+	'Wash',
+	'Water',
+	'White',
+	'Zero'
+];
