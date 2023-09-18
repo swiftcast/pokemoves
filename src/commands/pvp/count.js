@@ -33,10 +33,46 @@ module.exports = {
     async execute(interaction) {
 		const pokemon = interaction.options.getString('pokemon') ?? 'wigglytuff';
 
-    	const pokeEmbed = getCountsEmbed(pokemon)
+		const form = interaction.options.getString('form')
+
+    	const pokeEmbed = getCountsEmbed(pokemon,form)
 		await interaction.reply({ embeds: [pokeEmbed]});
 	},
 };
+
+let getCountsEmbed = function(pokemonInput, forme) {
+	let pokemonObj = getPokemonObj((forme ? `${pokemonInput} (${forme})` : pokemonInput))
+	let form = forme ?? ''
+	if (!pokemonObj) {
+	  return new EmbedBuilder()
+		  .setColor(0xFF0000) // Red color for error
+		  .setTitle('Pokemon not found')
+		  .setDescription(`The Pokemon "${pokemonInput}" was not found.`);
+	}
+  
+	const typeString = (pokemonObj.types || []).map(type => {
+	  const emote = typeEmote[type.toLowerCase()];
+	  return emote ? `<:${type}:${emote}>` : type; // Use emote if available, or type name
+  }).join(' ');
+  
+  
+	const pokeEmbed = new EmbedBuilder()
+	  .setColor(0x0099FF)
+	  .setTitle(`${pokemonObj.name} ${typeString}`)
+	  //.setURL('https://discord.js.org/')
+	  //.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+	  //.setDescription('Some description here')
+	  .setTimestamp()
+	  .setFields(getMovesFields(pokemonObj))
+	  //.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+	  try {
+  	pokeEmbed.setThumbnail(generateThumbnailURL(pokemonInput.toLowerCase(), form.toLowerCase()) )
+	  }
+	  catch(error) {
+		console.log(error)
+	  }
+   return pokeEmbed
+  }
 
 function getPokemonObj(command) {
   return list.pokemon.filter(poke => poke.name.toLowerCase() === command.toLowerCase())[0];
@@ -69,59 +105,32 @@ function getMovesFields(pokemonObj) {
 }
 
 
-let getCountsEmbed = function(pokemonInput, form) {
-  let pokemonObj = getPokemonObj(pokemonInput)
-
-  if (!pokemonObj) {
-    return new EmbedBuilder()
-        .setColor(0xFF0000) // Red color for error
-        .setTitle('Pokemon not found')
-        .setDescription(`The Pokemon "${pokemonInput}" was not found.`);
-  }
-
-  const typeString = (pokemonObj.types || []).map(type => {
-    const emote = typeEmote[type.toLowerCase()];
-    return emote ? `<:${type}:${emote}>` : type; // Use emote if available, or type name
-}).join(' ');
 
 
-  const pokeEmbed = new EmbedBuilder()
-	.setColor(0x0099FF)
-	.setTitle(`${pokemonObj.name} ${typeString}`)
-	//.setURL('https://discord.js.org/')
-	//.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-	//.setDescription('Some description here')
-	.setThumbnail(generateThumbnailURL(pokemonObj.name) )
-	/*.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-	)
-	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })*/
-	//.setImage('https://i.imgur.com/AfFp7pu.png')
-	.setTimestamp()
-	.setFields(getMovesFields(pokemonObj))
-	//.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
-
- return pokeEmbed
-}
-
-function generateThumbnailURL(pokemonName, thumbType) {
+function generateThumbnailURL(pokemonName, form) {
 	const baseUrl = 'https://play.pokemonshowdown.com/sprites/ani/';
-	switch (thumbType) {
+	
+	// Replace any periods or dashes in the Pokémon name
+	const sanitizedPokemonName = pokemonName.replace(/[\s.'’-]/g, '');
+
+  
+	switch (form) {
 	  case 'galarian':
+		return `${baseUrl}${sanitizedPokemonName}-${form.slice(0, -3)}.gif`;
 	  case 'alolan':
+		return `${baseUrl}${sanitizedPokemonName}-${form.slice(0, -1)}.gif`;
 	  case 'therian':
-	  case 'armoured':
 	  case 'sunny':
 	  case 'rainy':
 	  case 'snowy':
-		return `${baseUrl}${pokemonName}-${thumbType}.gif`;
+		return `${baseUrl}${sanitizedPokemonName}-${form}.gif`;
+	  case 'normal':
+	  case 'male':
+		return `${baseUrl}${sanitizedPokemonName}.gif`;
 	  case 'female':
-		return `${baseUrl}${pokemonName}-f.gif`;
+		return `${baseUrl}${sanitizedPokemonName}-f.gif`;
 	  default:
-		return `${baseUrl}${pokemonName.toLowerCase()}.gif`;
+		return `${baseUrl}${sanitizedPokemonName}.gif`;
 	}
   }
 
