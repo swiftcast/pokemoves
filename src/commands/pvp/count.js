@@ -85,22 +85,34 @@ function getMovesFields(pokemonObj) {
 
     // Loop through charged moves
     for (let i = 0; i < chargedMoves.length; i++) {
-        let chargedMoveName = list.moves[chargedMoves[i]].name;
+        let chargedMoveName = abbreviateString(list.moves[chargedMoves[i]].name);
         let fastMovesField = "";
 
+		if (pokemonObj.name === "Mew") {
         // Loop through fast moves for each charged move
-        for (let j = 0; j < fastMoves.length; j++) {
-            fastMovesField += `**${list.moves[fastMoves[j]].name}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`;
-        }
+			for (let j = 0; j < fastMoves.length; j++) {
+				fastMovesField += `**${abbreviateString(list.moves[fastMoves[j]].name)}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`;
+			}
+		}
+		else {
+			for (let j = 0; j < fastMoves.length; j++) {
+				const emote = typeEmote[list.moves[fastMoves[j]].type];
+				const type = list.moves[fastMoves[j]].type
+				fastMovesField += `**${abbreviateString(list.moves[fastMoves[j]].name)}**: ${list.counts[fastMoves[j]][chargedMoves[i]]}\n`;
+			}
+		}
+
+		const emote = typeEmote[list.moves[chargedMoves[i]].type];
+		const type = list.moves[chargedMoves[i]].type
 
         // Add the charged move and its corresponding fast moves to the fields
         fields.push({
-            name: chargedMoveName,
+            name: `<:${type}:${emote}> ${chargedMoveName}`,
             value: fastMovesField,
-            inline: true, // You can change this based on your layout preference
+            inline: true, 
         });
     }
-
+	
     return fields;
 }
 
@@ -143,6 +155,20 @@ function generateThumbnailURL(pokemonName, form) {
 	} catch (error) {
 	  console.error('Error reloading JSON data:', error.message);
 	  throw new Error('An error occurred while reloading the JSON data.');
+	}
+  }
+
+  function abbreviateString(input) {
+	const words = input.split(' ');
+  
+	if (words.length === 1) {
+	  return input;  // Return the input as is for a single word
+	} else {
+	  // Abbreviate all words except the last one
+	  const abbreviatedWords = words.slice(0, -1).map(word => word.charAt(0).toUpperCase() + '.');
+	  const lastWord = words[words.length - 1];  // Keep the last word as is
+  
+	  return [...abbreviatedWords, lastWord].join(' ');
 	}
   }
 
