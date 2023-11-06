@@ -4,13 +4,13 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 //const { token } = require('./config.json');
 
-require('dotenv').config();
-
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // attaching a .commands property to
 // client instance so that it can access your commands in other files
 client.commands = new Collection();
+
+const token = process.env.RELEASETOKEN;
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -43,4 +43,4 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(process.env.TOKEN);
+client.login(token);
